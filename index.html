@@ -21,30 +21,17 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* 首页样式 - 毛玻璃效果（移除蓝光效果） */
+        /* 首页样式 - 纯渐变背景（无大脑图片） */
         #homePage {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.85) 0%, rgba(41, 128, 185, 0.85) 100%);
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             position: relative;
             overflow: hidden;
             padding: 20px;
-        }
-
-        .home-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
-            filter: blur(12px);
-            z-index: 1;
         }
 
         .glass-container {
@@ -59,7 +46,6 @@
             width: 100%;
             max-width: 500px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            /* 移除蓝光边框效果 */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -121,6 +107,14 @@
             color: white;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-access-card:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         .code-access-card::before {
@@ -198,6 +192,27 @@
             50% {
                 transform: scale(1.05);
                 box-shadow: 0 6px 15px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        /* 小红书图标样式 */
+        .xiaohongshu-icon {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 1rem;
+            color: #ff2442;
+            animation: xhsPulse 2s infinite;
+        }
+
+        @keyframes xhsPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
             }
         }
 
@@ -1092,7 +1107,6 @@
 
     <!-- 首页 -->
     <div id="homePage">
-        <div class="home-background"></div>
         <div class="glass-container">
             <h1 class="home-title">SCL-90 症状自评量表</h1>
             <p class="home-subtitle">专业心理健康评估工具</p>
@@ -1109,10 +1123,14 @@
                 <p><strong>评分标准：</strong>0=从无，1=轻度，2=中度，3=较重，4=非常重</p>
             </div>
 
-            <div class="code-access-card code-feature-card">
+            <div class="code-access-card code-feature-card" id="getCodeCard">
                 <h4><i class="fas fa-lock"></i> 测试权限说明</h4>
                 <p>本测试需要兑换码验证才能开始，确保测试的专业性和准确性。</p>
                 <p>获取兑换码后，24小时内可无限次使用完整测试功能。</p>
+                <p style="margin-top: 10px; font-weight: 600; font-size: 0.9rem;">
+                    <i class="fas fa-shopping-cart"></i> 点击上方卡片前往小红书获取兑换码
+                    <span class="xiaohongshu-icon">📕</span>
+                </p>
             </div>
 
             <button class="start-btn" id="startBtn">
@@ -1303,6 +1321,9 @@
         // Edge Function 地址（后端验证接口）
         const EDGE_FUNCTION_URL = 'https://whxquysnluktjhkfnsql.supabase.co/functions/v1/validate-redemption-code';
 
+        // 小红书链接
+        const XIAOHONGSHU_LINK = 'https://xhslink.com/m/VBG910lgrY';
+
         // 检查是否已经验证过兑换码（24小时内有效）
         function checkAccess() {
             const savedToken = localStorage.getItem('scl90_access_token');
@@ -1370,6 +1391,11 @@
             document.getElementById('code-input').focus();
         }
 
+        // 跳转到小红书链接
+        function goToXiaohongshu() {
+            window.open(XIAOHONGSHU_LINK, '_blank');
+        }
+
         // ==============================
         // SCL-90 状态管理
         // ==============================
@@ -1395,6 +1421,7 @@
         const factorGrid = document.getElementById('factorGrid');
         const detailedInterpretation = document.getElementById('detailedInterpretation');
         const restartBtn = document.getElementById('restartBtn');
+        const getCodeCard = document.getElementById('getCodeCard');
         const optionsContainer = document.getElementById('optionsContainer');
         let optionElements = document.querySelectorAll('.option');
 
@@ -1408,6 +1435,13 @@
                     showCodeModal();
                 }
             });
+
+            // 为获取兑换码卡片添加点击事件（跳转到小红书）
+            if (getCodeCard) {
+                getCodeCard.addEventListener('click', function () {
+                    goToXiaohongshu();
+                });
+            }
 
             // 为选项添加点击事件
             optionElements.forEach(option => {
