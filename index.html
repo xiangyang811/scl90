@@ -96,7 +96,7 @@
             font-size: 0.95rem;
         }
 
-        /* 兑换码提示卡片 */
+        /* 兑换码提示卡片 - 已优化确保完整显示 */
         .code-access-card {
             background: rgba(255, 255, 255, 0.25);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -109,6 +109,8 @@
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s ease;
+            min-height: auto;
+            word-wrap: break-word;
         }
 
         .code-access-card:hover {
@@ -147,6 +149,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            word-break: break-word;
         }
 
         .code-access-card h4 i {
@@ -157,6 +160,7 @@
             font-size: 0.95rem;
             margin-bottom: 15px;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .code-feature-card {
@@ -1032,7 +1036,158 @@
             margin-right: 8px;
         }
 
-        /* 响应式调整 */
+        /* 响应式调整 - 手机端优化 */
+        @media (max-width: 767px) {
+            /* 首页优化 */
+            .glass-container {
+                padding: 30px 20px;
+            }
+            
+            .home-title {
+                font-size: 1.8rem;
+            }
+            
+            .home-subtitle {
+                font-size: 1rem;
+            }
+            
+            .code-access-card {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .code-access-card h4 {
+                font-size: 1.1rem;
+            }
+            
+            .code-access-card p {
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            
+            .code-feature-card::after {
+                content: "🔑 点击获取";
+                font-size: 0.7rem;
+                padding: 5px 10px;
+                right: 10px;
+            }
+            
+            .start-btn {
+                padding: 16px 30px;
+                font-size: 1.1rem;
+            }
+            
+            /* 结果页手机端优化 */
+            .result-container {
+                padding: 20px 15px;
+            }
+            
+            .result-title {
+                font-size: 1.4rem;
+            }
+            
+            .assessment-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .assessment-item {
+                padding: 15px 10px;
+            }
+            
+            .assessment-value {
+                font-size: 1.6rem;
+            }
+            
+            .assessment-label {
+                font-size: 0.8rem;
+            }
+            
+            .health-indicator {
+                padding: 15px;
+                margin-top: 15px;
+            }
+            
+            .indicator-title {
+                font-size: 1rem;
+            }
+            
+            .indicator-labels {
+                font-size: 0.7rem;
+            }
+            
+            .indicator-level {
+                font-size: 1rem;
+                margin-top: 10px;
+            }
+            
+            .factor-card {
+                padding: 15px;
+            }
+            
+            .factor-name {
+                font-size: 1rem;
+            }
+            
+            .factor-score {
+                font-size: 1.2rem;
+            }
+            
+            .factor-interpretation {
+                font-size: 0.85rem;
+                padding: 10px;
+            }
+            
+            .interpretation-content {
+                padding: 20px 15px;
+            }
+            
+            .interpretation-title {
+                font-size: 1.2rem;
+            }
+            
+            .interpretation-section h4 {
+                font-size: 1rem;
+            }
+            
+            .recommendation-box,
+            .caution-box {
+                padding: 15px;
+            }
+            
+            .action-steps {
+                padding: 20px 15px;
+            }
+            
+            .step {
+                margin-bottom: 15px;
+            }
+            
+            .step-number {
+                width: 25px;
+                height: 25px;
+                font-size: 0.9rem;
+                margin-right: 12px;
+            }
+            
+            .step-content h6 {
+                font-size: 0.95rem;
+            }
+            
+            .step-content p {
+                font-size: 0.9rem;
+            }
+            
+            .resource-item {
+                padding: 15px;
+            }
+            
+            .restart-btn {
+                padding: 16px 30px;
+                font-size: 1rem;
+            }
+        }
+
         @media (min-width: 768px) {
             .container {
                 max-width: 800px;
