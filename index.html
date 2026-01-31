@@ -96,7 +96,7 @@
             font-size: 0.95rem;
         }
 
-        /* 兑换码提示卡片 - 已优化确保完整显示 */
+        /* 兑换码提示卡片 - 已优化确保完整显示，overflow: visible */
         .code-access-card {
             background: rgba(255, 255, 255, 0.25);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -106,7 +106,7 @@
             text-align: center;
             color: white;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             cursor: pointer;
             transition: all 0.3s ease;
             min-height: auto;
@@ -427,14 +427,13 @@
             display: none;
         }
 
-        /* 结果页样式 */
+        /* 结果页样式 - 优化版 */
         .result-container {
             display: none;
             background: #f9fdfe;
             border-radius: 15px;
             padding: 25px 20px;
             margin-top: 20px;
-            border: 1px solid #d6eaf8;
         }
 
         .result-title {
@@ -446,7 +445,7 @@
             padding-bottom: 15px;
         }
 
-        /* 总体评估优化版 */
+        /* 总体评估优化版 - 简化卡片 */
         .overall-assessment {
             background: white;
             border-radius: 15px;
@@ -456,9 +455,15 @@
             border: 1px solid #eaeaea;
         }
 
+        .assessment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         .assessment-title {
             color: #2c3e50;
-            margin-bottom: 20px;
             font-size: 1.3rem;
             display: flex;
             align-items: center;
@@ -467,6 +472,38 @@
         .assessment-title i {
             margin-right: 10px;
             color: #3498db;
+        }
+
+        /* 总体评估标题后面的结果字体放大 - 颜色随结果变化 */
+        .assessment-result-tag {
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .result-tag-good {
+            background: #e8f6f3;
+            color: #27ae60;
+            border: 1px solid #b8e6cf;
+        }
+
+        .result-tag-normal {
+            background: #fff8e1;
+            color: #f39c12;
+            border: 1px solid #f8e1a6;
+        }
+
+        .result-tag-concern {
+            background: #ffebee;
+            color: #e74c3c;
+            border: 1px solid #ffcdd2;
+        }
+
+        .result-tag-severe {
+            background: #fdeaea;
+            color: #c0392b;
+            border: 1px solid #f5c6c6;
         }
 
         .assessment-grid {
@@ -484,21 +521,22 @@
             border: 1px solid #eaeaea;
         }
 
+        /* 手机端总分字体放大 */
         .assessment-value {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             margin-bottom: 5px;
         }
 
-        /* 总分颜色规则 */
+        /* 总分颜色规则 - 优化，正常状态用绿色 */
         .score-excellent {
             color: #27ae60;
             /* 绿色 - 优秀/良好 */
         }
 
         .score-good {
-            color: #3498db;
-            /* 蓝色 - 良好 */
+            color: #27ae60;
+            /* 绿色 - 良好状态 */
         }
 
         .score-moderate {
@@ -567,26 +605,37 @@
             margin-top: 5px;
         }
 
+        /* 手机端指示器文本加大 - 心理健康指示器下方的结果字号加大，颜色随结果变化 */
         .indicator-level {
             text-align: center;
             margin-top: 15px;
-            font-weight: 600;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 10px;
+            border-radius: 10px;
         }
 
-        .level-good {
+        .health-level-good {
             color: #27ae60;
+            background-color: #e8f6f3;
         }
 
-        .level-moderate {
+        .health-level-normal {
             color: #f39c12;
+            background-color: #fff8e1;
         }
 
-        .level-concern {
+        .health-level-concern {
             color: #e74c3c;
+            background-color: #ffebee;
         }
 
-        /* 各因子结果 */
+        .health-level-severe {
+            color: #c0392b;
+            background-color: #fdeaea;
+        }
+
+        /* 维度得分详情 - 9宫格布局 */
         .factor-results {
             margin-top: 30px;
         }
@@ -604,13 +653,273 @@
             color: #e74c3c;
         }
 
-        .factor-grid {
+        /* 最严重因子单独展示 */
+        .top-factor-container {
+            margin-bottom: 25px;
+        }
+
+        .top-factor-card {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff0e0 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.1);
+        }
+
+        .top-factor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .top-factor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #e67e22;
+        }
+
+        .top-factor-score {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #e74c3c;
+        }
+
+        .top-factor-bar {
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .top-factor-fill {
+            height: 100%;
+            background: linear-gradient(to right, #f39c12, #e74c3c);
+            border-radius: 6px;
+        }
+
+        .top-factor-interpretation {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+
+        /* 9宫格布局 - 宫格内的数字字号加大，强化视觉对比 */
+        .factor-grid-9 {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .factor-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .factor-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .factor-item-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* 宫格内数字字号加大 */
+        .factor-item-score {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .factor-item-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .status-normal {
+            background-color: #e8f6f3;
+            color: #27ae60;
+        }
+
+        .status-mild {
+            background-color: #fff8e1;
+            color: #f39c12;
+        }
+
+        .status-moderate {
+            background-color: #ffebee;
+            color: #e74c3c;
+        }
+
+        .status-severe {
+            background-color: #fdeaea;
+            color: #c0392b;
+        }
+
+        /* 因子详细解读区域 - 在宫格下方展示 */
+        .factor-detail-expanded {
+            margin-top: 15px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 2px solid #3498db;
+            animation: fadeIn 0.3s ease;
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .factor-detail-expanded.active {
+            display: block;
+        }
+
+        .expanded-factor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .expanded-factor-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .expanded-factor-score {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .expanded-factor-bar {
+            height: 12px;
+            background: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .expanded-factor-fill {
+            height: 100%;
+            border-radius: 6px;
+        }
+
+        .expanded-factor-description {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .expanded-factor-suggestion {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .expanded-factor-suggestion h5 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .expanded-factor-suggestion h5 i {
+            margin-right: 8px;
+            color: #3498db;
+        }
+
+        .expanded-factor-suggestion p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .expanded-factor-close {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .expanded-factor-close button {
+            background: #ecf0f1;
+            color: #34495e;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .expanded-factor-close button:hover {
+            background: #d5dbdd;
+        }
+
+        /* 因子详细解读 - 在手机端也要保持两列 */
+        .factor-details {
+            margin-top: 30px;
+        }
+
+        .factor-details-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .factor-details-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .factor-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
         }
 
-        .factor-card {
+        .factor-detail-card {
             background: white;
             border-radius: 12px;
             padding: 20px;
@@ -618,25 +927,25 @@
             border-top: 4px solid #3498db;
         }
 
-        .factor-header {
+        .factor-detail-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
 
-        .factor-name {
+        .factor-detail-name {
             font-size: 1.1rem;
             font-weight: 600;
             color: #2c3e50;
         }
 
-        .factor-score {
+        .factor-detail-score {
             font-size: 1.4rem;
             font-weight: 700;
         }
 
-        .factor-bar {
+        .factor-detail-bar {
             height: 10px;
             background: #ecf0f1;
             border-radius: 5px;
@@ -644,13 +953,13 @@
             margin: 15px 0;
         }
 
-        .factor-fill {
+        .factor-detail-fill {
             height: 100%;
             background: linear-gradient(to right, #3498db, #2ecc71);
             border-radius: 5px;
         }
 
-        .factor-interpretation {
+        .factor-detail-interpretation {
             font-size: 0.9rem;
             color: #7f8c8d;
             margin-top: 12px;
@@ -699,6 +1008,25 @@
         .interpretation-section h4 i {
             margin-right: 8px;
             color: #3498db;
+        }
+
+        /* 评估等级结果字体加大 */
+        .assessment-result-display {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        .result-good {
+            color: #27ae60;
+        }
+
+        .result-normal {
+            color: #f39c12;
+        }
+
+        .result-concern {
+            color: #e74c3c;
         }
 
         .interpretation-section p {
@@ -1038,150 +1366,199 @@
 
         /* 响应式调整 - 手机端优化 */
         @media (max-width: 767px) {
+
             /* 首页优化 */
             .glass-container {
                 padding: 30px 20px;
             }
-            
+
             .home-title {
                 font-size: 1.8rem;
             }
-            
+
             .home-subtitle {
                 font-size: 1rem;
             }
-            
+
             .code-access-card {
                 padding: 15px;
                 margin: 15px 0;
             }
-            
+
             .code-access-card h4 {
                 font-size: 1.1rem;
             }
-            
+
             .code-access-card p {
                 font-size: 0.9rem;
                 line-height: 1.4;
             }
-            
+
             .code-feature-card::after {
-                content: "🔑 点击获取";
+                content: "🔑 点击获取测试权限";
                 font-size: 0.7rem;
                 padding: 5px 10px;
                 right: 10px;
             }
-            
+
             .start-btn {
                 padding: 16px 30px;
                 font-size: 1.1rem;
             }
-            
+
             /* 结果页手机端优化 */
             .result-container {
                 padding: 20px 15px;
             }
-            
+
             .result-title {
                 font-size: 1.4rem;
             }
-            
+
+            /* 总体评估优化 - 手机端总分字体放大 */
+            .assessment-value {
+                font-size: 2.4rem !important;
+                /* 手机端加大 */
+            }
+
+            .assessment-label {
+                font-size: 0.9rem;
+            }
+
+            /* 总体评估标题后面的结果字体放大 */
+            .assessment-result-tag {
+                font-size: 1.2rem;
+                padding: 6px 14px;
+            }
+
             .assessment-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
-            
+
             .assessment-item {
                 padding: 15px 10px;
             }
-            
-            .assessment-value {
-                font-size: 1.6rem;
-            }
-            
-            .assessment-label {
-                font-size: 0.8rem;
-            }
-            
+
             .health-indicator {
                 padding: 15px;
                 margin-top: 15px;
             }
-            
+
             .indicator-title {
                 font-size: 1rem;
             }
-            
-            .indicator-labels {
-                font-size: 0.7rem;
-            }
-            
+
+            /* 手机端指示器文本加大 */
             .indicator-level {
-                font-size: 1rem;
-                margin-top: 10px;
+                font-size: 1.5rem !important;
+                margin-top: 12px;
+                padding: 12px;
             }
-            
-            .factor-card {
+
+            .indicator-labels {
+                font-size: 0.75rem;
+            }
+
+            /* 9宫格布局 - 手机端 */
+            .factor-grid-9 {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .factor-item {
+                padding: 12px 8px;
+            }
+
+            .factor-item-name {
+                font-size: 0.85rem;
+            }
+
+            /* 宫格内数字字号加大 - 手机端 */
+            .factor-item-score {
+                font-size: 1.6rem;
+            }
+
+            /* 因子详细展开区域 - 手机端优化 */
+            .factor-detail-expanded {
                 padding: 15px;
             }
-            
-            .factor-name {
-                font-size: 1rem;
+
+            .expanded-factor-name {
+                font-size: 1.1rem;
             }
-            
-            .factor-score {
-                font-size: 1.2rem;
+
+            .expanded-factor-score {
+                font-size: 1.5rem;
             }
-            
-            .factor-interpretation {
-                font-size: 0.85rem;
-                padding: 10px;
+
+            .top-factor-card {
+                padding: 15px;
             }
-            
+
+            .top-factor-name {
+                font-size: 1.1rem;
+            }
+
+            .top-factor-score {
+                font-size: 1.6rem;
+            }
+
+            /* 因子详细解读 - 手机端保持两列 */
+            .factor-details-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
             .interpretation-content {
                 padding: 20px 15px;
             }
-            
+
             .interpretation-title {
                 font-size: 1.2rem;
             }
-            
+
+            /* 评估等级结果字体加大 */
+            .assessment-result-display {
+                font-size: 1.5rem !important;
+            }
+
             .interpretation-section h4 {
                 font-size: 1rem;
             }
-            
+
             .recommendation-box,
             .caution-box {
                 padding: 15px;
             }
-            
+
             .action-steps {
                 padding: 20px 15px;
             }
-            
+
             .step {
                 margin-bottom: 15px;
             }
-            
+
             .step-number {
                 width: 25px;
                 height: 25px;
                 font-size: 0.9rem;
                 margin-right: 12px;
             }
-            
+
             .step-content h6 {
                 font-size: 0.95rem;
             }
-            
+
             .step-content p {
                 font-size: 0.9rem;
             }
-            
+
             .resource-item {
                 padding: 15px;
             }
-            
+
             .restart-btn {
                 padding: 16px 30px;
                 font-size: 1rem;
@@ -1207,8 +1584,14 @@
                 grid-column: span 4;
             }
 
-            .factor-grid {
+            .factor-grid-9 {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .factor-details-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
             }
 
             .step {
@@ -1217,6 +1600,11 @@
 
             .modal-content {
                 padding: 30px 25px;
+            }
+
+            /* 宫格内数字字号加大 - 桌面端 */
+            .factor-item-score {
+                font-size: 2rem;
             }
         }
 
@@ -1358,7 +1746,10 @@
 
                 <!-- 总体评估优化版 -->
                 <div class="overall-assessment">
-                    <h3 class="assessment-title"><i class="fas fa-clipboard-check"></i> 总体评估</h3>
+                    <div class="assessment-header">
+                        <h3 class="assessment-title"><i class="fas fa-clipboard-check"></i> 总体评估</h3>
+                        <div class="assessment-result-tag" id="overallResultTag">正常</div>
+                    </div>
                     <div class="assessment-grid" id="summaryGrid">
                         <!-- 这里将通过JavaScript动态生成 -->
                     </div>
@@ -1370,7 +1761,7 @@
                         </div>
                         <div class="indicator-labels">
                             <span>良好</span>
-                            <span>一般</span>
+                            <span>正常</span>
                             <span>关注</span>
                             <span>需要重视</span>
                         </div>
@@ -1378,15 +1769,29 @@
                     </div>
                 </div>
 
-                <!-- 各因子详细结果 -->
+                <!-- 各维度得分详情 - 优化为9宫格布局 -->
                 <div class="factor-results">
                     <h3 class="factor-title"><i class="fas fa-chart-bar"></i> 各维度得分详情</h3>
-                    <p style="color: #7f8c8d; margin-bottom: 20px; font-size: 0.95rem;">因子分 = 组成某一因子的各项总分 ÷
-                        组成该因子的项目数。通常因子分≥1.5提示该方面可能存在症状。</p>
 
-                    <div class="factor-grid" id="factorGrid">
+                    <!-- 最严重因子单独展示 -->
+                    <div class="top-factor-container" id="topFactorContainer">
                         <!-- 这里将通过JavaScript动态生成 -->
                     </div>
+
+                    <!-- 9宫格布局展示其他因子 -->
+                    <div class="factor-grid-9" id="factorGrid9">
+                        <!-- 这里将通过JavaScript动态生成 -->
+                    </div>
+
+                    <!-- 因子详情展开区域 -->
+                    <div id="factorDetailExpanded" class="factor-detail-expanded">
+                        <!-- 这里将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 因子详细解读 -->
+                <div class="factor-details" id="factorDetails">
+                    <!-- 这里将通过JavaScript动态生成 -->
                 </div>
 
                 <!-- 优化后的结果解读与建议 -->
@@ -1557,6 +1962,7 @@
 
         let currentQuestion = 0;
         let answers = new Array(90).fill(null);
+        let currentExpandedFactor = null;
 
         // DOM元素
         const homePage = document.getElementById('homePage');
@@ -1570,10 +1976,14 @@
         const nextBtn = document.getElementById('nextBtn');
         const submitBtn = document.getElementById('submitBtn');
         const resultContainer = document.getElementById('resultContainer');
+        const overallResultTag = document.getElementById('overallResultTag');
         const summaryGrid = document.getElementById('summaryGrid');
         const healthIndicator = document.getElementById('healthIndicator');
         const healthLevel = document.getElementById('healthLevel');
-        const factorGrid = document.getElementById('factorGrid');
+        const topFactorContainer = document.getElementById('topFactorContainer');
+        const factorGrid9 = document.getElementById('factorGrid9');
+        const factorDetailExpanded = document.getElementById('factorDetailExpanded');
+        const factorDetails = document.getElementById('factorDetails');
         const detailedInterpretation = document.getElementById('detailedInterpretation');
         const restartBtn = document.getElementById('restartBtn');
         const getCodeCard = document.getElementById('getCodeCard');
@@ -1775,6 +2185,116 @@
             }
         }
 
+        // 获取因子状态和颜色
+        function getFactorStatusAndColor(score) {
+            const numericScore = parseFloat(score);
+
+            if (numericScore < 1.5) {
+                return {
+                    status: "正常",
+                    statusClass: "status-normal",
+                    color: "#27ae60", // 绿色
+                    level: "good"
+                };
+            } else if (numericScore < 2.5) {
+                return {
+                    status: "轻度",
+                    statusClass: "status-mild",
+                    color: "#f39c12", // 橙色
+                    level: "mild"
+                };
+            } else if (numericScore < 3.5) {
+                return {
+                    status: "中度",
+                    statusClass: "status-moderate",
+                    color: "#e74c3c", // 红色
+                    level: "moderate"
+                };
+            } else {
+                return {
+                    status: "重度",
+                    statusClass: "status-severe",
+                    color: "#c0392b", // 深红色
+                    level: "severe"
+                };
+            }
+        }
+
+        // 获取总体评估结果
+        function getOverallResult(avgScore) {
+            const numericScore = parseFloat(avgScore);
+
+            if (numericScore < 1.0) {
+                return {
+                    text: "良好",
+                    class: "result-tag-good",
+                    color: "#27ae60",
+                    level: "good"
+                };
+            } else if (numericScore < 1.5) {
+                return {
+                    text: "正常",
+                    class: "result-tag-normal",
+                    color: "#f39c12",
+                    level: "normal"
+                };
+            } else if (numericScore < 2.5) {
+                return {
+                    text: "需要关注",
+                    class: "result-tag-concern",
+                    color: "#e74c3c",
+                    level: "concern"
+                };
+            } else {
+                return {
+                    text: "需要帮助",
+                    class: "result-tag-severe",
+                    color: "#c0392b",
+                    level: "severe"
+                };
+            }
+        }
+
+        // 获取心理健康指示器结果
+        function getHealthIndicatorResult(avgScore) {
+            const numericScore = parseFloat(avgScore);
+            let indicatorWidth = 0;
+
+            if (numericScore < 1.0) {
+                indicatorWidth = 25;
+                return {
+                    text: "心理健康状态良好",
+                    class: "health-level-good",
+                    width: indicatorWidth,
+                    level: "good"
+                };
+            } else if (numericScore < 1.5) {
+                indicatorWidth = 50;
+                return {
+                    text: "心理健康状态正常",
+                    class: "health-level-normal",
+                    width: indicatorWidth,
+                    level: "normal"
+                };
+            } else if (numericScore < 2.5) {
+                indicatorWidth = 75;
+                return {
+                    text: "需要关注心理健康",
+                    class: "health-level-concern",
+                    width: indicatorWidth,
+                    level: "concern"
+                };
+            } else {
+                indicatorWidth = 95;
+                return {
+                    text: "建议寻求专业帮助",
+                    class: "health-level-concern",
+                    width: indicatorWidth,
+                    level: "severe"
+                };
+            }
+        }
+
         // 显示详细结果
         function displayResults() {
             const {
@@ -1788,6 +2308,11 @@
 
             // 获取总分颜色类
             const totalScoreColorClass = getTotalScoreColor(totalScore);
+
+            // 更新总体评估标签 - 根据实际结果变化
+            const overallResult = getOverallResult(averageScore);
+            overallResultTag.textContent = overallResult.text;
+            overallResultTag.className = `assessment-result-tag ${overallResult.class}`;
 
             // 更新总体结果摘要
             summaryGrid.innerHTML = `
@@ -1813,69 +2338,37 @@
                 </div>
             `;
 
-            // 更新健康指示器
-            const avgScore = parseFloat(averageScore);
-            let indicatorWidth = 0;
-            let healthText = "";
-            let healthClass = "";
+            // 更新健康指示器 - 根据实际结果变化
+            const healthResult = getHealthIndicatorResult(averageScore);
+            healthIndicator.style.width = `${healthResult.width}%`;
+            healthLevel.innerHTML = `<span class="${healthResult.class}">${healthResult.text}</span>`;
 
-            if (avgScore < 1.0) {
-                indicatorWidth = 25;
-                healthText = "心理健康状态良好";
-                healthClass = "level-good";
-            } else if (avgScore < 1.5) {
-                indicatorWidth = 50;
-                healthText = "心理健康状态一般";
-                healthClass = "level-moderate";
-            } else if (avgScore < 2.5) {
-                indicatorWidth = 75;
-                healthText = "需要关注心理健康";
-                healthClass = "level-concern";
-            } else {
-                indicatorWidth = 95;
-                healthText = "建议寻求专业帮助";
-                healthClass = "level-concern";
-            }
+            // 找出最严重的因子
+            let sortedFactors = Object.entries(factorScores)
+                .sort((a, b) => parseFloat(b[1].score) - parseFloat(a[1].score));
 
-            healthIndicator.style.width = `${indicatorWidth}%`;
-            healthLevel.innerHTML = `<span class="${healthClass}">${healthText}</span>`;
+            let topFactor = sortedFactors[0];
+            let otherFactors = sortedFactors.slice(1);
 
-            // 更新各因子得分
-            let factorHTML = '';
-            for (const [factorName, factorData] of Object.entries(factorScores)) {
+            // 显示最严重因子
+            if (topFactor) {
+                const [factorName, factorData] = topFactor;
                 const numericScore = parseFloat(factorData.score);
-                let interpretation = "";
-                let color = "";
-
-                if (numericScore < 1.5) {
-                    interpretation = "正常范围";
-                    color = "#27ae60";
-                } else if (numericScore < 2.5) {
-                    interpretation = "轻度症状";
-                    color = "#f39c12";
-                } else if (numericScore < 3.5) {
-                    interpretation = "中度症状";
-                    color = "#e74c3c";
-                } else {
-                    interpretation = "重度症状";
-                    color = "#c0392b";
-                }
-
-                // 计算进度条宽度（最大4分对应100%）
                 const barWidth = (numericScore / 4) * 100;
+                const factorStatus = getFactorStatusAndColor(factorData.score);
 
-                factorHTML += `
-                    <div class="factor-card">
-                        <div class="factor-header">
-                            <div class="factor-name">${factorName}</div>
-                            <div class="factor-score" style="color:${color}">${factorData.score}</div>
+                topFactorContainer.innerHTML = `
+                    <div class="top-factor-card">
+                        <div class="top-factor-header">
+                            <div class="top-factor-name">${factorName} - 最关注维度</div>
+                            <div class="top-factor-score" style="color:${factorStatus.color}">${factorData.score}</div>
                         </div>
-                        <div class="factor-bar">
-                            <div class="factor-fill" style="width: ${barWidth}%; background: linear-gradient(to right, ${color}, ${color}99);"></div>
+                        <div class="top-factor-bar">
+                            <div class="top-factor-fill" style="width: ${barWidth}%"></div>
                         </div>
-                        <div class="factor-interpretation">
+                        <div class="top-factor-interpretation">
                             <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                                <span><strong>状态：</strong><span style="color:${color}; font-weight:600;">${interpretation}</span></span>
+                                <span><strong>状态：</strong><span style="color:${factorStatus.color}; font-weight:600;">${factorStatus.status}</span></span>
                                 <span><strong>项目数：</strong>${factorData.count}</span>
                             </div>
                             <p style="margin-top:10px;">${factors[factorName].description}</p>
@@ -1883,7 +2376,67 @@
                     </div>
                 `;
             }
-            factorGrid.innerHTML = factorHTML;
+
+            // 显示9宫格的其他因子
+            let factorGridHTML = '';
+            otherFactors.forEach(([factorName, factorData]) => {
+                const factorStatus = getFactorStatusAndColor(factorData.score);
+
+                factorGridHTML += `
+                    <div class="factor-item" data-factor="${factorName}">
+                        <div class="factor-item-name">${factorName}</div>
+                        <div class="factor-item-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                        <div class="factor-item-status ${factorStatus.statusClass}">${factorStatus.status}</div>
+                    </div>
+                `;
+            });
+            factorGrid9.innerHTML = factorGridHTML;
+
+            // 为宫格添加点击事件
+            document.querySelectorAll('.factor-item').forEach(item => {
+                item.addEventListener('click', function () {
+                    const factorName = this.getAttribute('data-factor');
+                    showFactorDetail(factorName, factorScores[factorName]);
+                });
+            });
+
+            // 隐藏因子详细展开区域
+            factorDetailExpanded.classList.remove('active');
+            currentExpandedFactor = null;
+
+            // 显示因子详细解读
+            let factorDetailsHTML = `
+                <h3 class="factor-details-title"><i class="fas fa-info-circle"></i> 各维度详细解读</h3>
+                <div class="factor-details-grid" id="factorDetailsGrid">
+            `;
+
+            for (const [factorName, factorData] of Object.entries(factorScores)) {
+                const numericScore = parseFloat(factorData.score);
+                const factorStatus = getFactorStatusAndColor(factorData.score);
+                const barWidth = (numericScore / 4) * 100;
+
+                factorDetailsHTML += `
+                    <div class="factor-detail-card">
+                        <div class="factor-detail-header">
+                            <div class="factor-detail-name">${factorName}</div>
+                            <div class="factor-detail-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                        </div>
+                        <div class="factor-detail-bar">
+                            <div class="factor-detail-fill" style="width: ${barWidth}%; background: linear-gradient(to right, ${factorStatus.color}, ${factorStatus.color}99);"></div>
+                        </div>
+                        <div class="factor-detail-interpretation">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <span><strong>状态：</strong><span style="color:${factorStatus.color}; font-weight:600;">${factorStatus.status}</span></span>
+                                <span><strong>项目数：</strong>${factorData.count}</span>
+                            </div>
+                            <p style="margin-top:10px;">${factors[factorName].description}</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            factorDetailsHTML += `</div>`;
+            factorDetails.innerHTML = factorDetailsHTML;
 
             // 更新优化后的详细解读
             let interpretationHTML = generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore);
@@ -1896,31 +2449,150 @@
             resultContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 显示因子详情 - 在宫格下方展开
+        function showFactorDetail(factorName, factorData) {
+            // 如果已经展开的是当前因子，则关闭
+            if (currentExpandedFactor === factorName) {
+                factorDetailExpanded.classList.remove('active');
+                currentExpandedFactor = null;
+                return;
+            }
+
+            const factorStatus = getFactorStatusAndColor(factorData.score);
+            const numericScore = parseFloat(factorData.score);
+            const barWidth = (numericScore / 4) * 100;
+
+            // 创建详情内容
+            const detailHTML = `
+                <div class="expanded-factor-header">
+                    <div class="expanded-factor-name">${factorName} 维度详情</div>
+                    <div class="expanded-factor-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                </div>
+                
+                <div class="expanded-factor-bar">
+                    <div class="expanded-factor-fill" style="width: ${barWidth}%; background: linear-gradient(to right, ${factorStatus.color}, ${factorStatus.color}99);"></div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <span style="color: #7f8c8d; font-size: 0.9rem;">正常范围</span>
+                    <span style="color: #7f8c8d; font-size: 0.9rem;">严重</span>
+                </div>
+                
+                <div style="text-align: center; margin: 15px 0;">
+                    <span class="factor-item-status ${factorStatus.statusClass}" style="font-size: 1.1rem; padding: 8px 16px;">${factorStatus.status}症状</span>
+                </div>
+                
+                <div class="expanded-factor-description">
+                    <h5 style="color: #2c3e50; margin-bottom: 10px; display: flex; align-items: center;">
+                        <i class="fas fa-info-circle" style="color: #3498db; margin-right: 8px;"></i> 维度说明
+                    </h5>
+                    <p>${factors[factorName].description}</p>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.count}</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">包含项目数</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.total}</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">项目总分</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="expanded-factor-suggestion">
+                    <h5><i class="fas fa-lightbulb"></i> 建议</h5>
+                    <p>${getFactorSuggestion(factorName, numericScore)}</p>
+                </div>
+                
+                <div class="expanded-factor-close">
+                    <button id="close-factor-detail">关闭详情</button>
+                </div>
+            `;
+
+            factorDetailExpanded.innerHTML = detailHTML;
+            factorDetailExpanded.classList.add('active');
+            currentExpandedFactor = factorName;
+
+            // 添加关闭按钮事件
+            document.getElementById('close-factor-detail').addEventListener('click', () => {
+                factorDetailExpanded.classList.remove('active');
+                currentExpandedFactor = null;
+            });
+
+            // 滚动到展开的区域
+            factorDetailExpanded.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 获取因子建议
+        function getFactorSuggestion(factorName, score) {
+            if (score < 1.5) {
+                return "该维度处于正常范围，继续保持良好的心理状态和生活习惯即可。";
+            }
+
+            let suggestion = "";
+
+            if (factorName === '抑郁') {
+                suggestion = score < 2.5 ?
+                    "建议增加社交活动，培养兴趣爱好，保持规律作息，多参与户外活动。" :
+                    "建议考虑心理咨询或专业评估，学习情绪管理技巧，必要时寻求专业帮助。";
+            } else if (factorName === '焦虑') {
+                suggestion = score < 2.5 ?
+                    "尝试放松技巧如深呼吸、冥想，减少咖啡因摄入，练习正念减压。" :
+                    "考虑学习认知行为疗法技巧或寻求专业帮助，建立应对焦虑的策略。";
+            } else if (factorName === '强迫症状') {
+                suggestion = score < 2.5 ?
+                    "尝试逐渐减少重复行为，分散注意力到其他活动，练习接受不确定性。" :
+                    "专业治疗如暴露与反应预防可能有益，建议寻求心理治疗师帮助。";
+            } else if (factorName === '人际关系敏感') {
+                suggestion = score < 2.5 ?
+                    "练习社交技巧，参加团体活动，增强自信心，学习有效沟通。" :
+                    "人际关系治疗或社交技能训练可能有帮助，考虑参加相关工作坊。";
+            } else if (factorName === '躯体化') {
+                suggestion = score < 2.5 ?
+                    "定期体检排除器质性疾病，学习身心放松技巧，如渐进式肌肉放松。" :
+                    "建议身心医学或心理生理治疗评估，学习压力管理和放松技巧。";
+            } else if (factorName === '敌对') {
+                suggestion = "学习情绪管理技巧，练习冷静思考，避免冲动反应，寻找健康的情绪宣泄方式。";
+            } else if (factorName === '恐怖') {
+                suggestion = "尝试渐进式暴露疗法，学习放松技巧，逐步面对恐惧情境。";
+            } else if (factorName === '偏执') {
+                suggestion = "练习信任他人，学习区分现实与想象，考虑认知行为疗法。";
+            } else if (factorName === '精神病性') {
+                suggestion = "建议寻求专业精神科评估，学习现实检验技巧，建立支持系统。";
+            } else {
+                suggestion = "关注睡眠质量，建立规律的作息，学习压力管理技巧。";
+            }
+
+            return suggestion;
+        }
+
         // 生成详细的解读内容
         function generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore) {
             const avgScore = parseFloat(averageScore);
+            const overallResult = getOverallResult(avgScore);
 
             // 总体评估部分
             let overallAssessment = '';
             let overallLevel = '';
-            let overallColor = '';
+            let overallResultClass = '';
 
             if (avgScore < 1.0) {
                 overallAssessment = '根据您的测试结果，总体心理健康状况良好。您的总均分在正常范围内（<1.0），表明最近一周内心理症状较少，心理健康状态较为稳定。';
                 overallLevel = '良好';
-                overallColor = '#27ae60';
+                overallResultClass = 'result-good';
             } else if (avgScore < 1.5) {
                 overallAssessment = '根据您的测试结果，总体心理健康状况在正常范围。您的总均分略高（1.0-1.5），可能存在轻微心理困扰，建议关注自身状态，采取适当的自我调节措施。';
-                overallLevel = '一般';
-                overallColor = '#f39c12';
+                overallLevel = '正常';
+                overallResultClass = 'result-normal';
             } else if (avgScore < 2.5) {
                 overallAssessment = '根据您的测试结果，可能存在一定程度的心理困扰。您的总均分超过正常范围（1.5-2.5），建议关注心理健康，学习压力管理技巧，必要时寻求专业支持。';
                 overallLevel = '需要关注';
-                overallColor = '#e74c3c';
+                overallResultClass = 'result-concern';
             } else {
                 overallAssessment = '根据您的测试结果，显示存在明显的心理困扰。您的总均分较高（≥2.5），建议尽快寻求专业心理健康评估和帮助，以获得适当的支持和干预。';
                 overallLevel = '需要专业帮助';
-                overallColor = '#c0392b';
+                overallResultClass = 'result-concern';
             }
 
             // 找出得分最高的三个因子
@@ -2005,7 +2677,7 @@
                 <div class="interpretation-content">
                     <h4><i class="fas fa-stethoscope"></i> 总体评估</h4>
                     <p>${overallAssessment}</p>
-                    <p><strong>评估等级：</strong><span style="color:${overallColor}; font-weight:600;">${overallLevel}</span></p>
+                    <p><strong>评估等级：</strong><span class="assessment-result-display ${overallResultClass}">${overallLevel}</span></p>
                     <p><strong>总分评估：</strong>您的总分为 <strong>${totalScore}</strong> 分（满分360分），根据SCL-90量表标准，这个分数${getScoreInterpretation(totalScore)}。</p>
                     ${positiveItemsInterpretation}
                     
@@ -2185,9 +2857,13 @@
             // 重置所有答案
             answers = new Array(90).fill(null);
             currentQuestion = 0;
+            currentExpandedFactor = null;
 
             // 隐藏结果页
             resultContainer.style.display = 'none';
+
+            // 隐藏因子详情展开区域
+            factorDetailExpanded.classList.remove('active');
 
             // 重新开始测试
             updateQuestion();
@@ -2298,8 +2974,100 @@
             lastTouchEnd = now;
         }, false);
 
+        // 代码保护功能
+        // ==============================
+
+        // 防止右键菜单
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 防止快捷键
+        document.addEventListener('keydown', function (e) {
+            // 禁用 F12
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+Shift+I
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+U
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+S
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+Shift+J
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+Shift+C
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                return false;
+            }
+            // 禁用 Ctrl+A
+            if (e.ctrlKey && e.key === 'a') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 防止文本选择
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 防止拖拽
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 额外键盘保护
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) { // F12
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { // Ctrl+S
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'A'.charCodeAt(0)) { // Ctrl+A
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+C
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) { // Ctrl+X
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'P'.charCodeAt(0)) { // Ctrl+P
+                return false;
+            }
+        };
+
         // 初始化问卷
         window.onload = initQuestionnaire;
+
     </script>
 </body>
 
