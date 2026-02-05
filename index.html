@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SCL-90 症状自评量表</title>
+    <title>SCL-90 症状自评量表（1-5评分制）</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -19,19 +19,22 @@
             color: #333;
             line-height: 1.6;
             -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
-        /* 首页样式 - 纯渐变背景（无大脑图片） */
+        /* 修复PC端首页显示问题 */
         #homePage {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            min-height: -webkit-fill-available;
+            min-height: 100dvh;
+            /* 兼容新标准 */
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             position: relative;
             overflow: hidden;
             padding: 20px;
+            width: 100%;
         }
 
         .glass-container {
@@ -96,7 +99,7 @@
             font-size: 0.95rem;
         }
 
-        /* 兑换码提示卡片 - 已优化确保完整显示，overflow: visible */
+        /* 兑换码提示卡片 */
         .code-access-card {
             background: rgba(255, 255, 255, 0.25);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -327,11 +330,14 @@
             transition: width 0.5s ease;
         }
 
+        /* 修改：加大题目字体 */
         .question-text {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
+            /* 从1.3rem加大到1.5rem */
             margin: 25px 0;
             color: #2c3e50;
-            font-weight: 500;
+            font-weight: 600;
+            /* 加粗 */
             line-height: 1.5;
         }
 
@@ -367,16 +373,18 @@
             box-shadow: 0 3px 10px rgba(52, 152, 219, 0.15);
         }
 
+        /* 修改：测试页选项字体颜色加深，字重加大 */
         .option-value {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.6rem;
+            font-weight: 800;
             color: #2c3e50;
-            min-width: 40px;
+            min-width: 45px;
         }
 
         .option-label {
-            font-size: 1rem;
-            color: #555;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
             margin-left: 15px;
         }
 
@@ -445,7 +453,7 @@
             padding-bottom: 15px;
         }
 
-        /* 总体评估优化版 - 简化卡片 */
+        /* 总体评估优化版 */
         .overall-assessment {
             background: white;
             border-radius: 15px;
@@ -474,7 +482,7 @@
             color: #3498db;
         }
 
-        /* 总体评估标题后面的结果字体放大 - 颜色随结果变化 */
+        /* 总体评估标题后面的结果字体放大 */
         .assessment-result-tag {
             padding: 8px 18px;
             border-radius: 20px;
@@ -528,30 +536,25 @@
             margin-bottom: 5px;
         }
 
-        /* 总分颜色规则 - 优化，正常状态用绿色 */
+        /* 总分颜色规则 - 根据国内SCL-90标准 */
         .score-excellent {
             color: #27ae60;
-            /* 绿色 - 优秀/良好 */
+            /* 正常范围 */
         }
 
         .score-good {
-            color: #27ae60;
-            /* 绿色 - 良好状态 */
+            color: #f39c12;
+            /* 轻度异常 */
         }
 
         .score-moderate {
-            color: #f39c12;
-            /* 橙色 - 中等/需要注意 */
+            color: #e74c3c;
+            /* 中度异常 */
         }
 
         .score-concern {
-            color: #e74c3c;
-            /* 红色 - 需要关注 */
-        }
-
-        .score-serious {
             color: #c0392b;
-            /* 深红色 - 严重 */
+            /* 重度异常 */
         }
 
         .assessment-label {
@@ -605,7 +608,7 @@
             margin-top: 5px;
         }
 
-        /* 手机端指示器文本加大 - 心理健康指示器下方的结果字号加大，颜色随结果变化 */
+        /* 手机端指示器文本加大 */
         .indicator-level {
             text-align: center;
             margin-top: 15px;
@@ -708,7 +711,7 @@
             border-radius: 8px;
         }
 
-        /* 9宫格布局 - 宫格内的数字字号加大，强化视觉对比 */
+        /* 9宫格布局 */
         .factor-grid-9 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -777,7 +780,7 @@
             color: #c0392b;
         }
 
-        /* 因子详细解读区域 - 在宫格下方展示 */
+        /* 因子详细解读区域 */
         .factor-detail-expanded {
             margin-top: 15px;
             background: white;
@@ -895,77 +898,76 @@
             background: #d5dbdd;
         }
 
-        /* 因子详细解读 - 在手机端也要保持两列 */
-        .factor-details {
+        /* 修改：因子详细解读换成表格形式展示常模标准 */
+        .factor-norm-table {
             margin-top: 30px;
-        }
-
-        .factor-details-title {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .factor-details-title i {
-            margin-right: 10px;
-            color: #3498db;
-        }
-
-        .factor-details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .factor-detail-card {
+            width: 100%;
+            border-collapse: collapse;
             background: white;
             border-radius: 12px;
-            padding: 20px;
+            overflow: hidden;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border-top: 4px solid #3498db;
         }
 
-        .factor-detail-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .factor-detail-name {
-            font-size: 1.1rem;
+        .factor-norm-table th {
+            background: #3498db;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
             font-weight: 600;
-            color: #2c3e50;
+            font-size: 0.95rem;
         }
 
-        .factor-detail-score {
-            font-size: 1.4rem;
+        .factor-norm-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 0.9rem;
+        }
+
+        .factor-norm-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .factor-norm-table tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        .norm-score {
             font-weight: 700;
         }
 
-        .factor-detail-bar {
-            height: 10px;
-            background: #ecf0f1;
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 15px 0;
+        .norm-good {
+            color: #27ae60;
         }
 
-        .factor-detail-fill {
-            height: 100%;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            border-radius: 5px;
+        .norm-mild {
+            color: #f39c12;
         }
 
-        .factor-detail-interpretation {
+        .norm-moderate {
+            color: #e74c3c;
+        }
+
+        .norm-severe {
+            color: #c0392b;
+        }
+
+        /* 提示信息 */
+        .factor-tips {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f0f7ff;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
             font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-top: 12px;
-            padding: 12px;
-            background: #f9f9f9;
-            border-radius: 8px;
+            color: #555;
+            text-align: center;
+        }
+
+        .factor-tips i {
+            color: #3498db;
+            margin-right: 8px;
         }
 
         /* 结果解读优化 */
@@ -1068,6 +1070,7 @@
             color: #3498db;
         }
 
+        /* 修改：重要说明第三条明显一点 */
         .caution-box {
             background: #fff8f0;
             border-radius: 10px;
@@ -1087,6 +1090,17 @@
         .caution-box h5 i {
             margin-right: 8px;
             color: #e74c3c;
+        }
+
+        /* 修改：第三条特别突出显示 */
+        .caution-box .important-note {
+            font-weight: 700;
+            color: #e74c3c;
+            background-color: #ffebee;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 3px solid #e74c3c;
+            margin: 10px 0;
         }
 
         .action-steps {
@@ -1406,6 +1420,11 @@
                 font-size: 1.1rem;
             }
 
+            /* 测试页题目字体 - 手机端也加大 */
+            .question-text {
+                font-size: 1.4rem;
+            }
+
             /* 结果页手机端优化 */
             .result-container {
                 padding: 20px 15px;
@@ -1418,7 +1437,6 @@
             /* 总体评估优化 - 手机端总分字体放大 */
             .assessment-value {
                 font-size: 2.4rem !important;
-                /* 手机端加大 */
             }
 
             .assessment-label {
@@ -1504,12 +1522,6 @@
                 font-size: 1.6rem;
             }
 
-            /* 因子详细解读 - 手机端保持两列 */
-            .factor-details-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
             .interpretation-content {
                 padding: 20px 15px;
             }
@@ -1563,11 +1575,30 @@
                 padding: 16px 30px;
                 font-size: 1rem;
             }
+
+            /* 手机端表格优化 */
+            .factor-norm-table th,
+            .factor-norm-table td {
+                padding: 10px 6px;
+                font-size: 0.8rem;
+            }
         }
 
+        /* PC端优化 - 修复首页显示问题 */
         @media (min-width: 768px) {
+            #homePage {
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .glass-container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
             .container {
-                max-width: 800px;
+                max-width: 900px;
                 margin: 0 auto;
                 padding: 30px 25px;
                 border-radius: 15px;
@@ -1589,11 +1620,6 @@
                 gap: 15px;
             }
 
-            .factor-details-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
             .step {
                 margin-bottom: 25px;
             }
@@ -1605,6 +1631,13 @@
             /* 宫格内数字字号加大 - 桌面端 */
             .factor-item-score {
                 font-size: 2rem;
+            }
+
+            /* PC端表格优化 */
+            .factor-norm-table th,
+            .factor-norm-table td {
+                padding: 15px 12px;
+                font-size: 0.95rem;
             }
         }
 
@@ -1652,7 +1685,7 @@
     <div id="homePage">
         <div class="glass-container">
             <h1 class="home-title">SCL-90 症状自评量表</h1>
-            <p class="home-subtitle">专业心理健康评估工具</p>
+            <p class="home-subtitle">专业心理健康评估工具（1-5评分制）</p>
 
             <div class="home-info">
                 <h3><i class="fas fa-info-circle"></i> 关于本测试</h3>
@@ -1663,7 +1696,7 @@
                     <li>测试时间约10-15分钟</li>
                     <li>适用16岁以上人群</li>
                 </ul>
-                <p><strong>评分标准：</strong>0=从无，1=轻度，2=中度，3=较重，4=非常重</p>
+                <p><strong>评分标准（1-5分制）：</strong>1=从无，2=轻度，3=中度，4=较重，5=非常重</p>
             </div>
 
             <div class="code-access-card code-feature-card" id="getCodeCard">
@@ -1694,7 +1727,7 @@
                 <p class="subtitle">请根据"最近一周"的真实感受作答</p>
                 <div class="instructions">
                     <p><strong>指导语：</strong>请仔细阅读每一条陈述，根据<strong>最近一周（包括今天）</strong>的实际感觉，选择最符合您情况的选项。</p>
-                    <p><strong>评分说明：</strong>0=从无，1=轻度，2=中度，3=较重，4=非常重。</p>
+                    <p><strong>评分说明（1-5分制）：</strong>1=从无，2=轻度，3=中度，4=较重，5=非常重。</p>
                 </div>
             </header>
 
@@ -1711,24 +1744,24 @@
             <div id="questionContainer">
                 <div class="question-text" id="questionText">头痛。</div>
                 <div class="options" id="optionsContainer">
-                    <div class="option" data-value="0">
-                        <div class="option-value">0</div>
-                        <div class="option-label">从无（没有该症状）</div>
-                    </div>
                     <div class="option" data-value="1">
                         <div class="option-value">1</div>
-                        <div class="option-label">轻度（偶尔有，程度轻微）</div>
+                        <div class="option-label">从无（没有该症状）</div>
                     </div>
                     <div class="option" data-value="2">
                         <div class="option-value">2</div>
-                        <div class="option-label">中度（经常有，程度中等）</div>
+                        <div class="option-label">轻度（偶尔有，程度轻微）</div>
                     </div>
                     <div class="option" data-value="3">
                         <div class="option-value">3</div>
-                        <div class="option-label">较重（频繁有，程度较重）</div>
+                        <div class="option-label">中度（经常有，程度中等）</div>
                     </div>
                     <div class="option" data-value="4">
                         <div class="option-value">4</div>
+                        <div class="option-label">较重（频繁有，程度较重）</div>
+                    </div>
+                    <div class="option" data-value="5">
+                        <div class="option-value">5</div>
                         <div class="option-label">非常重（持续有，程度严重）</div>
                     </div>
                 </div>
@@ -1742,7 +1775,7 @@
 
             <!-- 结果页面 -->
             <div class="result-container" id="resultContainer">
-                <h2 class="result-title"><i class="fas fa-chart-line"></i> SCL-90 测评结果</h2>
+                <h2 class="result-title"><i class="fas fa-chart-line"></i> SCL-90 测评结果（1-5分制）</h2>
 
                 <!-- 总体评估优化版 -->
                 <div class="overall-assessment">
@@ -1762,8 +1795,9 @@
                         <div class="indicator-labels">
                             <span>良好</span>
                             <span>正常</span>
-                            <span>关注</span>
-                            <span>需要重视</span>
+                            <span>轻度症状</span>
+                            <span>中度症状</span>
+                            <span>重度症状</span>
                         </div>
                         <div class="indicator-level" id="healthLevel">评估中...</div>
                     </div>
@@ -1783,15 +1817,20 @@
                         <!-- 这里将通过JavaScript动态生成 -->
                     </div>
 
+                    <!-- 提示信息 -->
+                    <div class="factor-tips">
+                        <i class="fas fa-info-circle"></i> 点击上方宫格卡片查看各维度详细解读（含原始分、因子均分、常模标准M±SD）
+                    </div>
+
                     <!-- 因子详情展开区域 -->
                     <div id="factorDetailExpanded" class="factor-detail-expanded">
                         <!-- 这里将通过JavaScript动态生成 -->
                     </div>
                 </div>
 
-                <!-- 因子详细解读 -->
-                <div class="factor-details" id="factorDetails">
-                    <!-- 这里将通过JavaScript动态生成 -->
+                <!-- 修改：因子详细解读换成常模标准表格 -->
+                <div class="interpretation-section" id="factorNormTable">
+                    <!-- 这里将通过JavaScript动态生成表格 -->
                 </div>
 
                 <!-- 优化后的结果解读与建议 -->
@@ -1872,6 +1911,20 @@
                 indices: [9, 14, 26, 28, 30, 34, 38, 41, 42, 45, 47, 48, 49, 50, 53, 54, 56, 60, 61, 63, 65, 67, 69, 71, 72, 74, 75, 76, 78, 81, 82, 84, 85, 87, 88, 89],
                 description: "反映睡眠、饮食及死亡观念等。"
             }
+        };
+
+        // 国内常模标准（1-5分制） M±SD - 根据国内标准化数据
+        const factorNorms = {
+            "躯体化": { mean: 1.37, sd: 0.48 },
+            "强迫症状": { mean: 1.62, sd: 0.58 },
+            "人际关系敏感": { mean: 1.65, sd: 0.61 },
+            "抑郁": { mean: 1.50, sd: 0.59 },
+            "焦虑": { mean: 1.39, sd: 0.43 },
+            "敌对": { mean: 1.48, sd: 0.56 },
+            "恐怖": { mean: 1.23, sd: 0.41 },
+            "偏执": { mean: 1.43, sd: 0.57 },
+            "精神病性": { mean: 1.29, sd: 0.42 },
+            "其他": { mean: 1.33, sd: 0.45 }
         };
 
         // ==============================
@@ -1983,7 +2036,7 @@
         const topFactorContainer = document.getElementById('topFactorContainer');
         const factorGrid9 = document.getElementById('factorGrid9');
         const factorDetailExpanded = document.getElementById('factorDetailExpanded');
-        const factorDetails = document.getElementById('factorDetails');
+        const factorNormTable = document.getElementById('factorNormTable');
         const detailedInterpretation = document.getElementById('detailedInterpretation');
         const restartBtn = document.getElementById('restartBtn');
         const getCodeCard = document.getElementById('getCodeCard');
@@ -2020,7 +2073,6 @@
             prevBtn.addEventListener('click', goToPrevious);
             nextBtn.addEventListener('click', goToNext);
             submitBtn.addEventListener('click', function () {
-                // 优化1：点击提交问卷直接跳转结果页面
                 displayResults();
             });
 
@@ -2100,7 +2152,7 @@
                 }
             });
 
-            // 自动跳转到下一题（修复：所有题目都自动跳转，除了最后一题）
+            // 自动跳转到下一题
             if (currentQuestion < 89) {
                 setTimeout(() => goToNext(), 200);
             }
@@ -2122,11 +2174,11 @@
             }
         }
 
-        // 计算结果
+        // 计算结果（1-5分制）
         function calculateResults() {
             let factorScores = {};
 
-            // 计算每个因子的平均分
+            // 计算每个因子的平均分（1-5分制）
             for (const [factorName, factorData] of Object.entries(factors)) {
                 let sum = 0;
                 let count = 0;
@@ -2138,161 +2190,184 @@
                     }
                 });
 
+                // 计算因子均分和原始分
+                const factorMean = count > 0 ? (sum / count) : 0;
+                const rawScore = sum; // 原始分（因子总分）
+                const itemCount = count; // 项目数
+
+                // 计算与常模的差值
+                const norm = factorNorms[factorName];
+                const normDiff = norm ? (factorMean - norm.mean) : 0;
+                const zScore = norm ? (normDiff / norm.sd) : 0;
+
                 factorScores[factorName] = {
-                    score: count > 0 ? (sum / count).toFixed(2) : 0,
-                    total: sum,
-                    count: count
+                    mean: factorMean.toFixed(2),
+                    raw: rawScore,
+                    count: itemCount,
+                    normDiff: normDiff.toFixed(2),
+                    zScore: zScore.toFixed(2),
+                    normMean: norm ? norm.mean.toFixed(2) : "0.00",
+                    normSD: norm ? norm.sd.toFixed(2) : "0.00"
                 };
             }
 
-            // 计算总分和总均分
+            // 计算总分和总均分（1-5分制）
             const totalScore = answers.filter(a => a !== null).reduce((sum, a) => sum + a, 0);
             const answeredCount = answers.filter(a => a !== null).length;
-            const averageScore = answeredCount > 0 ? (totalScore / answeredCount).toFixed(2) : 0;
+            const averageScore = answeredCount > 0 ? (totalScore / answeredCount) : 0;
 
-            // 阳性项目数（评分≥2的项目）
+            // 阳性项目数（评分≥2的项目）- 国内标准：≥2分为阳性症状
             const positiveItems = answers.filter(a => a !== null && a >= 2).length;
-            // 阴性项目数（评分=0或1的项目）
-            const negativeItems = answers.filter(a => a !== null && a < 2).length;
-            // 阳性症状均分
-            const negativeTotal = answers.filter(a => a !== null && a < 2).reduce((sum, a) => sum + a, 0);
-            const positiveAverage = positiveItems > 0 ? ((totalScore - negativeTotal) / positiveItems).toFixed(2) : 0;
+            // 阴性项目数（评分=1的项目）
+            const negativeItems = answers.filter(a => a !== null && a === 1).length;
+            // 阳性症状均分（阳性项目总分/阳性项目数）
+            const positiveTotal = answers.filter(a => a !== null && a >= 2).reduce((sum, a) => sum + a, 0);
+            const positiveAverage = positiveItems > 0 ? (positiveTotal / positiveItems) : 0;
+
+            // 阳性项目严重程度（≥3分的项目数）
+            const severePositiveItems = answers.filter(a => a !== null && a >= 3).length;
 
             return {
                 factorScores,
                 totalScore,
-                averageScore,
+                averageScore: averageScore.toFixed(2),
                 positiveItems,
                 negativeItems,
-                positiveAverage
+                positiveAverage: positiveAverage.toFixed(2),
+                severePositiveItems
             };
         }
 
-        // 获取总分对应的颜色类
+        // 获取总分对应的颜色类（国内SCL-90标准）
         function getTotalScoreColor(totalScore) {
-            // SCL-90总分范围：0-360分
-            // 根据总分范围设置颜色
-            if (totalScore < 90) {
-                return "score-excellent"; // 优秀/良好：<90分
-            } else if (totalScore < 150) {
-                return "score-good"; // 良好：90-149分
-            } else if (totalScore < 210) {
-                return "score-moderate"; // 中等/需要注意：150-209分
-            } else if (totalScore < 270) {
-                return "score-concern"; // 需要关注：210-269分
+            // 国内SCL-90标准（1-5分制，总分范围：90-450分）
+            // 总分<160分：正常范围
+            // 总分160-199分：可能存在轻度心理问题
+            // 总分200-249分：可能存在中度心理问题
+            // 总分250-299分：可能存在重度心理问题
+            // 总分≥300分：可能存在严重心理问题
+            if (totalScore < 160) {
+                return "score-excellent"; // 正常范围
+            } else if (totalScore < 200) {
+                return "score-good"; // 轻度异常
+            } else if (totalScore < 250) {
+                return "score-moderate"; // 中度异常
+            } else if (totalScore < 300) {
+                return "score-concern"; // 重度异常
             } else {
-                return "score-serious"; // 严重：≥270分
+                return "score-concern"; // 严重异常
             }
         }
 
-        // 获取因子状态和颜色
-        function getFactorStatusAndColor(score) {
-            const numericScore = parseFloat(score);
+        // 获取因子状态和颜色（国内SCL-90标准）
+        function getFactorStatusAndColor(meanScore) {
+            const numericScore = parseFloat(meanScore);
 
+            // 国内SCL-90标准（1-5分制）：
+            // 因子分<1.5：正常范围
+            // 因子分1.5-1.9：轻度异常（边缘状态）
+            // 因子分2.0-2.9：中度异常（有明显症状）
+            // 因子分≥3.0：重度异常（症状严重）
             if (numericScore < 1.5) {
                 return {
                     status: "正常",
                     statusClass: "status-normal",
-                    color: "#27ae60", // 绿色
-                    level: "good"
+                    color: "#27ae60",
+                    level: "normal"
                 };
-            } else if (numericScore < 2.5) {
+            } else if (numericScore < 2.0) {
                 return {
                     status: "轻度",
                     statusClass: "status-mild",
-                    color: "#f39c12", // 橙色
+                    color: "#f39c12",
                     level: "mild"
                 };
-            } else if (numericScore < 3.5) {
+            } else if (numericScore < 3.0) {
                 return {
                     status: "中度",
                     statusClass: "status-moderate",
-                    color: "#e74c3c", // 红色
+                    color: "#e74c3c",
                     level: "moderate"
                 };
             } else {
                 return {
                     status: "重度",
                     statusClass: "status-severe",
-                    color: "#c0392b", // 深红色
-                    level: "severe"
-                };
-            }
-        }
-
-        // 获取总体评估结果
-        function getOverallResult(avgScore) {
-            const numericScore = parseFloat(avgScore);
-
-            if (numericScore < 1.0) {
-                return {
-                    text: "良好",
-                    class: "result-tag-good",
-                    color: "#27ae60",
-                    level: "good"
-                };
-            } else if (numericScore < 1.5) {
-                return {
-                    text: "正常",
-                    class: "result-tag-normal",
-                    color: "#f39c12",
-                    level: "normal"
-                };
-            } else if (numericScore < 2.5) {
-                return {
-                    text: "需要关注",
-                    class: "result-tag-concern",
-                    color: "#e74c3c",
-                    level: "concern"
-                };
-            } else {
-                return {
-                    text: "需要帮助",
-                    class: "result-tag-severe",
                     color: "#c0392b",
                     level: "severe"
                 };
             }
         }
 
-        // 获取心理健康指示器结果
-        function getHealthIndicatorResult(avgScore) {
+        // 获取总体评估结果（国内SCL-90标准）
+        function getOverallResult(avgScore, totalScore, positiveItems) {
+            const numericScore = parseFloat(avgScore);
+
+            // 国内SCL-90综合评估标准：
+            let overallLevel = "正常";
+            let overallClass = "result-tag-normal";
+
+            if (totalScore < 160 && numericScore < 1.5 && positiveItems < 43) {
+                overallLevel = "正常";
+                overallClass = "result-tag-good";
+            } else if (totalScore < 200 && numericScore < 2.0) {
+                overallLevel = "轻度异常";
+                overallClass = "result-tag-normal";
+            } else if (totalScore < 250 && numericScore < 3.0) {
+                overallLevel = "中度异常";
+                overallClass = "result-tag-concern";
+            } else if (totalScore < 300) {
+                overallLevel = "重度异常";
+                overallClass = "result-tag-concern";
+            } else {
+                overallLevel = "严重异常";
+                overallClass = "result-tag-severe";
+            }
+
+            return {
+                text: overallLevel,
+                class: overallClass,
+                level: overallLevel === "正常" ? "good" :
+                    overallLevel === "轻度异常" ? "normal" :
+                        overallLevel === "中度异常" ? "concern" : "severe"
+            };
+        }
+
+        // 获取心理健康指示器结果（国内SCL-90标准）
+        function getHealthIndicatorResult(avgScore, totalScore) {
             const numericScore = parseFloat(avgScore);
             let indicatorWidth = 0;
+            let text = "";
+            let levelClass = "";
 
-            if (numericScore < 1.0) {
-                indicatorWidth = 25;
-                return {
-                    text: "心理健康状态良好",
-                    class: "health-level-good",
-                    width: indicatorWidth,
-                    level: "good"
-                };
-            } else if (numericScore < 1.5) {
-                indicatorWidth = 50;
-                return {
-                    text: "心理健康状态正常",
-                    class: "health-level-normal",
-                    width: indicatorWidth,
-                    level: "normal"
-                };
-            } else if (numericScore < 2.5) {
-                indicatorWidth = 75;
-                return {
-                    text: "需要关注心理健康",
-                    class: "health-level-concern",
-                    width: indicatorWidth,
-                    level: "concern"
-                };
+            // 根据总分判断
+            if (totalScore < 160) {
+                indicatorWidth = 20;
+                text = "心理健康状态正常";
+                levelClass = "health-level-good";
+            } else if (totalScore < 200) {
+                indicatorWidth = 40;
+                text = "轻度心理困扰";
+                levelClass = "health-level-normal";
+            } else if (totalScore < 250) {
+                indicatorWidth = 65;
+                text = "中度心理困扰";
+                levelClass = "health-level-concern";
+            } else if (totalScore < 300) {
+                indicatorWidth = 85;
+                text = "重度心理困扰";
+                levelClass = "health-level-concern";
             } else {
                 indicatorWidth = 95;
-                return {
-                    text: "建议寻求专业帮助",
-                    class: "health-level-concern",
-                    width: indicatorWidth,
-                    level: "severe"
-                };
+                text = "严重心理困扰";
+                levelClass = "health-level-severe";
             }
+
+            return {
+                text: text,
+                class: levelClass,
+                width: indicatorWidth
+            };
         }
 
         // 显示详细结果
@@ -2303,14 +2378,15 @@
                 averageScore,
                 positiveItems,
                 negativeItems,
-                positiveAverage
+                positiveAverage,
+                severePositiveItems
             } = calculateResults();
 
             // 获取总分颜色类
             const totalScoreColorClass = getTotalScoreColor(totalScore);
 
-            // 更新总体评估标签 - 根据实际结果变化
-            const overallResult = getOverallResult(averageScore);
+            // 更新总体评估标签
+            const overallResult = getOverallResult(averageScore, totalScore, positiveItems);
             overallResultTag.textContent = overallResult.text;
             overallResultTag.className = `assessment-result-tag ${overallResult.class}`;
 
@@ -2319,7 +2395,7 @@
                 <div class="assessment-item">
                     <div class="assessment-value ${totalScoreColorClass}">${totalScore}</div>
                     <div class="assessment-label">总分</div>
-                    <div class="assessment-note">范围：0-360</div>
+                    <div class="assessment-note">范围：90-450（1-5分制）</div>
                 </div>
                 <div class="assessment-item">
                     <div class="assessment-value">${averageScore}</div>
@@ -2332,20 +2408,20 @@
                     <div class="assessment-note">单项分≥2的项目</div>
                 </div>
                 <div class="assessment-item">
-                    <div class="assessment-value">${positiveAverage}</div>
-                    <div class="assessment-label">阳性均分</div>
-                    <div class="assessment-note">阳性项目平均分</div>
+                    <div class="assessment-value">${severePositiveItems}</div>
+                    <div class="assessment-label">严重项目</div>
+                    <div class="assessment-note">单项分≥3的项目</div>
                 </div>
             `;
 
-            // 更新健康指示器 - 根据实际结果变化
-            const healthResult = getHealthIndicatorResult(averageScore);
+            // 更新健康指示器
+            const healthResult = getHealthIndicatorResult(averageScore, totalScore);
             healthIndicator.style.width = `${healthResult.width}%`;
             healthLevel.innerHTML = `<span class="${healthResult.class}">${healthResult.text}</span>`;
 
             // 找出最严重的因子
             let sortedFactors = Object.entries(factorScores)
-                .sort((a, b) => parseFloat(b[1].score) - parseFloat(a[1].score));
+                .sort((a, b) => parseFloat(b[1].mean) - parseFloat(a[1].mean));
 
             let topFactor = sortedFactors[0];
             let otherFactors = sortedFactors.slice(1);
@@ -2353,15 +2429,15 @@
             // 显示最严重因子
             if (topFactor) {
                 const [factorName, factorData] = topFactor;
-                const numericScore = parseFloat(factorData.score);
-                const barWidth = (numericScore / 4) * 100;
-                const factorStatus = getFactorStatusAndColor(factorData.score);
+                const numericScore = parseFloat(factorData.mean);
+                const barWidth = (numericScore / 5) * 100;
+                const factorStatus = getFactorStatusAndColor(factorData.mean);
 
                 topFactorContainer.innerHTML = `
                     <div class="top-factor-card">
                         <div class="top-factor-header">
                             <div class="top-factor-name">${factorName} - 最关注维度</div>
-                            <div class="top-factor-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                            <div class="top-factor-score" style="color:${factorStatus.color}">${factorData.mean}</div>
                         </div>
                         <div class="top-factor-bar">
                             <div class="top-factor-fill" style="width: ${barWidth}%"></div>
@@ -2370,6 +2446,7 @@
                             <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                                 <span><strong>状态：</strong><span style="color:${factorStatus.color}; font-weight:600;">${factorStatus.status}</span></span>
                                 <span><strong>项目数：</strong>${factorData.count}</span>
+                                <span><strong>原始分：</strong>${factorData.raw}</span>
                             </div>
                             <p style="margin-top:10px;">${factors[factorName].description}</p>
                         </div>
@@ -2380,13 +2457,16 @@
             // 显示9宫格的其他因子
             let factorGridHTML = '';
             otherFactors.forEach(([factorName, factorData]) => {
-                const factorStatus = getFactorStatusAndColor(factorData.score);
+                const factorStatus = getFactorStatusAndColor(factorData.mean);
 
                 factorGridHTML += `
                     <div class="factor-item" data-factor="${factorName}">
                         <div class="factor-item-name">${factorName}</div>
-                        <div class="factor-item-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                        <div class="factor-item-score" style="color:${factorStatus.color}">${factorData.mean}</div>
                         <div class="factor-item-status ${factorStatus.statusClass}">${factorStatus.status}</div>
+                        <div style="font-size:0.75rem; color:#7f8c8d; margin-top:5px;">
+                            原始分: ${factorData.raw}
+                        </div>
                     </div>
                 `;
             });
@@ -2404,42 +2484,11 @@
             factorDetailExpanded.classList.remove('active');
             currentExpandedFactor = null;
 
-            // 显示因子详细解读
-            let factorDetailsHTML = `
-                <h3 class="factor-details-title"><i class="fas fa-info-circle"></i> 各维度详细解读</h3>
-                <div class="factor-details-grid" id="factorDetailsGrid">
-            `;
+            // 显示常模标准表格
+            displayNormTable(factorScores);
 
-            for (const [factorName, factorData] of Object.entries(factorScores)) {
-                const numericScore = parseFloat(factorData.score);
-                const factorStatus = getFactorStatusAndColor(factorData.score);
-                const barWidth = (numericScore / 4) * 100;
-
-                factorDetailsHTML += `
-                    <div class="factor-detail-card">
-                        <div class="factor-detail-header">
-                            <div class="factor-detail-name">${factorName}</div>
-                            <div class="factor-detail-score" style="color:${factorStatus.color}">${factorData.score}</div>
-                        </div>
-                        <div class="factor-detail-bar">
-                            <div class="factor-detail-fill" style="width: ${barWidth}%; background: linear-gradient(to right, ${factorStatus.color}, ${factorStatus.color}99);"></div>
-                        </div>
-                        <div class="factor-detail-interpretation">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                                <span><strong>状态：</strong><span style="color:${factorStatus.color}; font-weight:600;">${factorStatus.status}</span></span>
-                                <span><strong>项目数：</strong>${factorData.count}</span>
-                            </div>
-                            <p style="margin-top:10px;">${factors[factorName].description}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            factorDetailsHTML += `</div>`;
-            factorDetails.innerHTML = factorDetailsHTML;
-
-            // 更新优化后的详细解读
-            let interpretationHTML = generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore);
+            // 更新详细解读
+            let interpretationHTML = generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore, severePositiveItems);
             detailedInterpretation.innerHTML = interpretationHTML;
 
             // 显示结果页面
@@ -2449,7 +2498,70 @@
             resultContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 显示因子详情 - 在宫格下方展开
+        // 显示常模标准表格
+        function displayNormTable(factorScores) {
+            let tableHTML = `
+                <h3 class="interpretation-title"><i class="fas fa-table"></i> 各维度常模标准对照表（1-5分制）</h3>
+                <table class="factor-norm-table">
+                    <thead>
+                        <tr>
+                            <th>维度名称</th>
+                            <th>您的得分</th>
+                            <th>常模标准 (M±SD)</th>
+                            <th>与常模差值</th>
+                            <th>评估状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            for (const [factorName, factorData] of Object.entries(factorScores)) {
+                const factorStatus = getFactorStatusAndColor(factorData.mean);
+                const normDiff = parseFloat(factorData.normDiff);
+                let diffText = "";
+                let diffClass = "";
+
+                // 根据与常模的差值判断
+                if (normDiff > 2.0) {
+                    diffText = "显著偏高";
+                    diffClass = "norm-severe";
+                } else if (normDiff > 1.0) {
+                    diffText = "偏高";
+                    diffClass = "norm-moderate";
+                } else if (normDiff > -1.0) {
+                    diffText = "正常范围";
+                    diffClass = "norm-good";
+                } else if (normDiff > -2.0) {
+                    diffText = "偏低";
+                    diffClass = "norm-mild";
+                } else {
+                    diffText = "显著偏低";
+                    diffClass = "norm-good";
+                }
+
+                tableHTML += `
+                    <tr>
+                        <td><strong>${factorName}</strong></td>
+                        <td class="norm-score">${factorData.mean}</td>
+                        <td>${factorData.normMean} ± ${factorData.normSD}</td>
+                        <td class="${diffClass}">${diffText}</td>
+                        <td><span class="factor-item-status ${factorStatus.statusClass}">${factorStatus.status}</span></td>
+                    </tr>
+                `;
+            }
+
+            tableHTML += `
+                    </tbody>
+                </table>
+                <div class="factor-tips" style="margin-top:15px;">
+                    <i class="fas fa-lightbulb"></i> 说明：M±SD表示常模平均值±标准差。与常模差值表示您的得分与常模平均值的差异程度。
+                </div>
+            `;
+
+            factorNormTable.innerHTML = tableHTML;
+        }
+
+        // 显示因子详情
         function showFactorDetail(factorName, factorData) {
             // 如果已经展开的是当前因子，则关闭
             if (currentExpandedFactor === factorName) {
@@ -2458,15 +2570,19 @@
                 return;
             }
 
-            const factorStatus = getFactorStatusAndColor(factorData.score);
-            const numericScore = parseFloat(factorData.score);
-            const barWidth = (numericScore / 4) * 100;
+            const factorStatus = getFactorStatusAndColor(factorData.mean);
+            const numericScore = parseFloat(factorData.mean);
+            const barWidth = (numericScore / 5) * 100;
+            const norm = factorNorms[factorName];
+
+            // 计算与常模的Z分数
+            const zScore = norm ? ((numericScore - norm.mean) / norm.sd).toFixed(2) : "N/A";
 
             // 创建详情内容
             const detailHTML = `
                 <div class="expanded-factor-header">
                     <div class="expanded-factor-name">${factorName} 维度详情</div>
-                    <div class="expanded-factor-score" style="color:${factorStatus.color}">${factorData.score}</div>
+                    <div class="expanded-factor-score" style="color:${factorStatus.color}">${factorData.mean}</div>
                 </div>
                 
                 <div class="expanded-factor-bar">
@@ -2488,14 +2604,31 @@
                     </h5>
                     <p>${factors[factorName].description}</p>
                     
-                    <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-                        <div style="text-align: center;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+                        <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.raw}</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">原始分（总分）</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.mean}</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">因子均分</div>
+                        </div>
+                        <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 8px;">
                             <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.count}</div>
                             <div style="font-size: 0.9rem; color: #7f8c8d;">包含项目数</div>
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${factorData.total}</div>
-                            <div style="font-size: 0.9rem; color: #7f8c8d;">项目总分</div>
+                        <div style="text-align: center; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: #2c3e50;">${norm ? norm.mean.toFixed(2) : "N/A"}±${norm ? norm.sd.toFixed(2) : "N/A"}</div>
+                            <div style="font-size: 0.9rem; color: #7f8c8d;">常模标准 (M±SD)</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background: #e8f6f3; border-radius: 8px;">
+                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px;">与常模比较</div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>差值：<strong>${factorData.normDiff}</strong></span>
+                            <span>Z分数：<strong>${zScore}</strong></span>
+                            <span>状态：<strong style="color:${factorStatus.color}">${factorStatus.status}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -2533,23 +2666,23 @@
             let suggestion = "";
 
             if (factorName === '抑郁') {
-                suggestion = score < 2.5 ?
+                suggestion = score < 2.0 ?
                     "建议增加社交活动，培养兴趣爱好，保持规律作息，多参与户外活动。" :
                     "建议考虑心理咨询或专业评估，学习情绪管理技巧，必要时寻求专业帮助。";
             } else if (factorName === '焦虑') {
-                suggestion = score < 2.5 ?
+                suggestion = score < 2.0 ?
                     "尝试放松技巧如深呼吸、冥想，减少咖啡因摄入，练习正念减压。" :
                     "考虑学习认知行为疗法技巧或寻求专业帮助，建立应对焦虑的策略。";
             } else if (factorName === '强迫症状') {
-                suggestion = score < 2.5 ?
+                suggestion = score < 2.0 ?
                     "尝试逐渐减少重复行为，分散注意力到其他活动，练习接受不确定性。" :
                     "专业治疗如暴露与反应预防可能有益，建议寻求心理治疗师帮助。";
             } else if (factorName === '人际关系敏感') {
-                suggestion = score < 2.5 ?
+                suggestion = score < 2.0 ?
                     "练习社交技巧，参加团体活动，增强自信心，学习有效沟通。" :
                     "人际关系治疗或社交技能训练可能有帮助，考虑参加相关工作坊。";
             } else if (factorName === '躯体化') {
-                suggestion = score < 2.5 ?
+                suggestion = score < 2.0 ?
                     "定期体检排除器质性疾病，学习身心放松技巧，如渐进式肌肉放松。" :
                     "建议身心医学或心理生理治疗评估，学习压力管理和放松技巧。";
             } else if (factorName === '敌对') {
@@ -2568,36 +2701,40 @@
         }
 
         // 生成详细的解读内容
-        function generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore) {
+        function generateDetailedInterpretation(factorScores, averageScore, positiveItems, totalScore, severePositiveItems) {
             const avgScore = parseFloat(averageScore);
-            const overallResult = getOverallResult(avgScore);
+            const overallResult = getOverallResult(avgScore, totalScore, positiveItems);
 
             // 总体评估部分
             let overallAssessment = '';
             let overallLevel = '';
             let overallResultClass = '';
 
-            if (avgScore < 1.0) {
-                overallAssessment = '根据您的测试结果，总体心理健康状况良好。您的总均分在正常范围内（<1.0），表明最近一周内心理症状较少，心理健康状态较为稳定。';
-                overallLevel = '良好';
-                overallResultClass = 'result-good';
-            } else if (avgScore < 1.5) {
-                overallAssessment = '根据您的测试结果，总体心理健康状况在正常范围。您的总均分略高（1.0-1.5），可能存在轻微心理困扰，建议关注自身状态，采取适当的自我调节措施。';
+            if (totalScore < 160) {
+                overallAssessment = '根据您的测试结果，总体心理健康状况正常。您的总分在正常范围内（<160分），表明最近一周内心理症状较少，心理健康状态较为稳定。';
                 overallLevel = '正常';
+                overallResultClass = 'result-good';
+            } else if (totalScore < 200) {
+                overallAssessment = '根据您的测试结果，存在轻度心理困扰。您的总分略高（160-199分），可能存在轻微心理症状，建议关注自身状态，采取适当的自我调节措施。';
+                overallLevel = '轻度异常';
                 overallResultClass = 'result-normal';
-            } else if (avgScore < 2.5) {
-                overallAssessment = '根据您的测试结果，可能存在一定程度的心理困扰。您的总均分超过正常范围（1.5-2.5），建议关注心理健康，学习压力管理技巧，必要时寻求专业支持。';
-                overallLevel = '需要关注';
+            } else if (totalScore < 250) {
+                overallAssessment = '根据您的测试结果，存在中度心理困扰。您的总分超过正常范围（200-249分），建议关注心理健康，学习压力管理技巧，考虑寻求专业支持。';
+                overallLevel = '中度异常';
+                overallResultClass = 'result-concern';
+            } else if (totalScore < 300) {
+                overallAssessment = '根据您的测试结果，存在重度心理困扰。您的总分较高（250-299分），建议尽快寻求专业心理健康评估和帮助，以获得适当的支持和干预。';
+                overallLevel = '重度异常';
                 overallResultClass = 'result-concern';
             } else {
-                overallAssessment = '根据您的测试结果，显示存在明显的心理困扰。您的总均分较高（≥2.5），建议尽快寻求专业心理健康评估和帮助，以获得适当的支持和干预。';
-                overallLevel = '需要专业帮助';
+                overallAssessment = '根据您的测试结果，存在严重心理困扰。您的总分很高（≥300分），强烈建议尽快寻求专业心理健康评估和帮助，以获得适当的支持和干预。';
+                overallLevel = '严重异常';
                 overallResultClass = 'result-concern';
             }
 
             // 找出得分最高的三个因子
             const sortedFactors = Object.entries(factorScores)
-                .sort((a, b) => parseFloat(b[1].score) - parseFloat(a[1].score))
+                .sort((a, b) => parseFloat(b[1].mean) - parseFloat(a[1].mean))
                 .slice(0, 3);
 
             // 主要关注领域解读
@@ -2609,22 +2746,22 @@
                         <p>根据您的测试结果，以下三个维度得分较高，可能需要特别关注：</p>
                         <ul>
                             ${sortedFactors.map(([name, data]) => {
-                    const score = parseFloat(data.score);
+                    const score = parseFloat(data.mean);
                     let suggestion = '';
                     if (name === '抑郁') {
-                        suggestion = score < 2.5 ? '建议增加社交活动，培养兴趣爱好，保持规律作息' : '建议考虑心理咨询或专业评估';
+                        suggestion = score < 2.0 ? '建议增加社交活动，培养兴趣爱好，保持规律作息' : '建议考虑心理咨询或专业评估';
                     } else if (name === '焦虑') {
-                        suggestion = score < 2.5 ? '尝试放松技巧如深呼吸、冥想，减少咖啡因摄入' : '考虑学习认知行为疗法技巧或寻求专业帮助';
+                        suggestion = score < 2.0 ? '尝试放松技巧如深呼吸、冥想，减少咖啡因摄入' : '考虑学习认知行为疗法技巧或寻求专业帮助';
                     } else if (name === '强迫症状') {
-                        suggestion = score < 2.5 ? '尝试逐渐减少重复行为，分散注意力到其他活动' : '专业治疗如暴露与反应预防可能有益';
+                        suggestion = score < 2.0 ? '尝试逐渐减少重复行为，分散注意力到其他活动' : '专业治疗如暴露与反应预防可能有益';
                     } else if (name === '人际关系敏感') {
-                        suggestion = score < 2.5 ? '练习社交技巧，参加团体活动，增强自信心' : '人际关系治疗或社交技能训练可能有帮助';
+                        suggestion = score < 2.0 ? '练习社交技巧，参加团体活动，增强自信心' : '人际关系治疗或社交技能训练可能有帮助';
                     } else if (name === '躯体化') {
-                        suggestion = score < 2.5 ? '定期体检排除器质性疾病，学习身心放松技巧' : '建议身心医学或心理生理治疗评估';
+                        suggestion = score < 2.0 ? '定期体检排除器质性疾病，学习身心放松技巧' : '建议身心医学或心理生理治疗评估';
                     } else {
                         suggestion = '根据具体情况采取相应调节措施';
                     }
-                    return `<li><strong>${name}（得分：${data.score}）</strong> - ${suggestion}</li>`;
+                    return `<li><strong>${name}（得分：${data.mean}）</strong> - ${suggestion}</li>`;
                 }).join('')}
                         </ul>
                     </div>
@@ -2635,221 +2772,70 @@
             let positiveItemsInterpretation = '';
             if (positiveItems > 0) {
                 let positiveLevel = '';
-                if (positiveItems < 20) {
+                if (positiveItems < 30) {
                     positiveLevel = '较少，表明大部分时间心理状态良好';
-                } else if (positiveItems < 40) {
+                } else if (positiveItems < 50) {
                     positiveLevel = '中等，提示存在一定程度的心理困扰';
                 } else {
                     positiveLevel = '较多，表明心理困扰较为广泛';
                 }
 
                 positiveItemsInterpretation = `
-                    <p><strong>阳性项目数解读：</strong>您的测试结果显示有 <strong>${positiveItems}</strong> 个项目得分≥2，${positiveLevel}。</p>
-                `;
-            }
-
-            // 个性化建议生成
-            let personalizedSuggestions = generatePersonalizedSuggestions(sortedFactors, avgScore);
-
-            // 何时寻求专业帮助
-            let whenToSeekHelp = '';
-            if (avgScore >= 2.0 || sortedFactors.some(([_, data]) => parseFloat(data.score) >= 2.5)) {
-                whenToSeekHelp = `
-                    <div class="caution-box">
-                        <h5><i class="fas fa-ambulance"></i> 何时考虑寻求专业帮助</h5>
-                        <p>基于您的测试结果，建议考虑寻求专业心理健康服务，如果：</p>
-                        <ul>
-                            <li>这些症状持续超过2周且影响日常生活</li>
-                            <li>感到难以控制自己的情绪或行为</li>
-                            <li>有自伤或伤害他人的想法</li>
-                            <li>工作、学习或人际关系受到明显影响</li>
-                            <li>自我调节方法效果有限</li>
-                        </ul>
-                        <p><strong>专业帮助可能包括：</strong>心理咨询、心理治疗、精神科评估等。</p>
-                    </div>
+                    <p><strong>阳性项目数解读：</strong>您的测试结果显示有 <strong>${positiveItems}</strong> 个项目得分≥2（阳性项目），${positiveLevel}。</p>
                 `;
             }
 
             // 构建完整的解读HTML
             return `
-                <h3 class="interpretation-title"><i class="fas fa-comment-medical"></i> 结果解读与建议</h3>
+                <h3 class="interpretation-title"><i class="fas fa-comment-medical"></i> 结果解读与建议（1-5分制）</h3>
                 
                 <div class="interpretation-content">
                     <h4><i class="fas fa-stethoscope"></i> 总体评估</h4>
                     <p>${overallAssessment}</p>
                     <p><strong>评估等级：</strong><span class="assessment-result-display ${overallResultClass}">${overallLevel}</span></p>
-                    <p><strong>总分评估：</strong>您的总分为 <strong>${totalScore}</strong> 分（满分360分），根据SCL-90量表标准，这个分数${getScoreInterpretation(totalScore)}。</p>
+                    <p><strong>总分评估：</strong>您的总分为 <strong>${totalScore}</strong> 分（满分450分，1-5分制），根据SCL-90量表国内常模标准，这个分数${getScoreInterpretation(totalScore)}。</p>
                     ${positiveItemsInterpretation}
                     
                     ${primaryConcerns}
                     
-                    <h4><i class="fas fa-lightbulb"></i> 个性化建议</h4>
-                    ${personalizedSuggestions}
-                    
-                    ${whenToSeekHelp}
-                </div>
-                
-                <div class="action-steps">
-                    <h5><i class="fas fa-walking"></i> 您可以采取的步骤</h5>
-                    
-                    <div class="step">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h6>自我观察与记录</h6>
-                            <p>在未来1-2周内，每天花几分钟记录情绪和症状变化。注意哪些情况会加重或减轻症状，这有助于了解触发因素。</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h6>建立健康生活习惯</h6>
-                            <p>确保充足的睡眠（7-9小时），保持均衡饮食，每周进行至少150分钟中等强度运动。这些基础措施对心理健康至关重要。</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h6>学习压力管理技巧</h6>
-                            <p>尝试正念冥想、深呼吸练习、渐进式肌肉放松等技巧。每天花10-15分钟练习，有助于降低焦虑和压力水平。</p>
-                        </div>
-                    </div>
-                    
-                    <div class="step">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h6>建立支持系统</h6>
-                            <p>与信任的亲友分享感受，参加支持小组或社区活动。社会支持是心理健康的重要保护因素。</p>
-                        </div>
-                    </div>
-                    
-                    ${avgScore >= 1.5 ? `
-                    <div class="step">
-                        <div class="step-number">5</div>
-                        <div class="step-content">
-                            <h6>考虑专业评估</h6>
-                            <p>如果症状持续或加重，建议预约心理健康专业人员（心理咨询师、心理治疗师或精神科医生）进行评估。</p>
-                        </div>
-                    </div>
-                    ` : ''}
-                </div>
-                
-                <div class="resources-list">
-                    <h4><i class="fas fa-book"></i> 心理健康资源与工具</h4>
-                    
-                    <div class="resource-item">
-                        <div class="resource-title"><i class="fas fa-mobile-alt"></i> 心理健康应用程序</div>
-                        <p>Headspace、Calm、Wysa等应用提供正念冥想、情绪跟踪和认知行为疗法练习。</p>
-                    </div>
-                    
-                    <div class="resource-item">
-                        <div class="resource-title"><i class="fas fa-globe"></i> 在线资源</div>
-                        <p>中国心理学会、简单心理、壹心理等平台提供心理健康知识、自我评估工具和专业服务信息。</p>
-                    </div>
-                    
-                    <div class="resource-item">
-                        <div class="resource-title"><i class="fas fa-phone-alt"></i> 心理援助热线</div>
-                        <p>全国心理援助热线：400-161-9995（24小时）；北京心理危机干预中心：010-82951332</p>
-                    </div>
+                    <h4><i class="fas fa-lightbulb"></i> 建议措施</h4>
+                    <p>基于您的测试结果，我们建议：</p>
+                    <ul>
+                        <li><strong>自我观察：</strong>在未来1-2周内，每天记录情绪和症状变化</li>
+                        <li><strong>生活方式：</strong>确保充足睡眠、均衡饮食和适量运动</li>
+                        <li><strong>压力管理：</strong>尝试正念冥想、深呼吸等放松技巧</li>
+                        <li><strong>社会支持：</strong>与信任的亲友分享感受，寻求情感支持</li>
+                        ${totalScore >= 200 ? '<li><strong>专业评估：</strong>考虑预约心理健康专业人员评估</li>' : ''}
+                        ${totalScore >= 250 ? '<li><strong>紧急求助：</strong>如有自伤或伤害他人的想法，请立即联系 emergency services</li>' : ''}
+                    </ul>
                 </div>
                 
                 <div class="caution-box" style="margin-top: 25px;">
-                    <h5><i class="fas fa-exclamation-circle"></i> 重要说明</h5>
-                    <p>1. 本测试结果仅供参考，不能替代专业诊断。SCL-90是筛查工具，不是诊断工具。</p>
-                    <p>2. 测试结果可能受多种因素影响，包括测试时情绪状态、环境、对题目的理解等。</p>
-                    <p>3. 如果您有紧急情况（如自伤或伤害他人的风险），请立即联系 emergency services 或前往最近医院急诊科。</p>
-                    <p>4. 定期进行心理健康自评有助于了解自身状态变化，建议每1-3个月重新评估一次。</p>
+                    <h5><i class="fas fa-exclamation-circle"></i> 重要说明（1-5分制标准）</h5>
+                    <p>1. 本测试基于1-5分制评分，总分范围90-450分，总均分≥1.5可能存在心理困扰，≥2.0建议关注。</p>
+                    <p>2. 阳性项目定义：单项分≥2分（轻度及以上症状）的项目。</p>
+                    <div class="important-note">
+                        3. <strong>本测试结果仅供参考，不能替代专业诊断。</strong> SCL-90是筛查工具，不是诊断工具。
+                    </div>
+                    <p>4. 如果您有紧急情况（如自伤或伤害他人的风险），请立即联系 emergency services 或前往最近医院急诊科。</p>
+                    <p>5. 定期进行心理健康自评有助于了解自身状态变化，建议每1-3个月重新评估一次。</p>
                 </div>
             `;
         }
 
         // 根据总分获取解释
         function getScoreInterpretation(totalScore) {
-            if (totalScore < 90) {
+            if (totalScore < 160) {
                 return "处于正常范围，表明您的心理健康状况良好";
-            } else if (totalScore < 150) {
-                return "略高于正常范围，可能存在轻微心理困扰";
-            } else if (totalScore < 210) {
-                return "明显高于正常范围，提示可能存在中等程度的心理困扰";
-            } else if (totalScore < 270) {
+            } else if (totalScore < 200) {
+                return "略高于正常范围，可能存在轻度心理困扰";
+            } else if (totalScore < 250) {
+                return "明显高于正常范围，提示可能存在中度心理困扰";
+            } else if (totalScore < 300) {
                 return "显著高于正常范围，建议关注心理健康并考虑专业评估";
             } else {
                 return "严重高于正常范围，建议尽快寻求专业心理健康帮助";
             }
-        }
-
-        // 生成个性化建议
-        function generatePersonalizedSuggestions(sortedFactors, avgScore) {
-            let suggestions = '';
-
-            // 基于总体分数的一般建议
-            if (avgScore < 1.0) {
-                suggestions = `
-                    <p>您的心理健康状态良好，可以继续保持当前的健康习惯：</p>
-                    <ul>
-                        <li>保持规律的生活作息和适量的体育活动</li>
-                        <li>维持积极的社交关系和情感支持系统</li>
-                        <li>学习压力管理技巧，即使当前压力不大</li>
-                        <li>定期进行心理健康自评，关注状态变化</li>
-                    </ul>
-                `;
-            } else if (avgScore < 1.5) {
-                suggestions = `
-                    <p>您可能存在轻微的心理困扰，以下建议可能对您有帮助：</p>
-                    <ul>
-                        <li>练习正念冥想，每天10-15分钟，帮助提高情绪觉察能力</li>
-                        <li>建立规律的睡眠时间表，确保充足休息</li>
-                        <li>减少咖啡因和酒精摄入，它们可能加重焦虑</li>
-                        <li>尝试写情绪日记，记录每天的情绪波动和触发因素</li>
-                    </ul>
-                `;
-            } else if (avgScore < 2.5) {
-                suggestions = `
-                    <p>您可能存在中等程度的心理困扰，建议采取以下措施：</p>
-                    <ul>
-                        <li>考虑学习认知行为疗法（CBT）的自助技巧，识别和改变负面思维模式</li>
-                        <li>建立固定的放松时间，如每天30分钟进行喜欢的放松活动</li>
-                        <li>与信任的人讨论您的感受，不要孤立自己</li>
-                        <li>考虑短期心理咨询，学习更有效的应对策略</li>
-                    </ul>
-                `;
-            } else {
-                suggestions = `
-                    <p>您的测试结果显示明显的心理困扰，建议：</p>
-                    <ul>
-                        <li>尽快预约心理健康专业人员进行全面评估</li>
-                        <li>考虑心理治疗，如认知行为疗法、人际关系疗法等</li>
-                        <li>在专业人员指导下，可能需要药物治疗配合心理治疗</li>
-                        <li>建立安全计划，包括紧急联系人列表和危机应对策略</li>
-                    </ul>
-                `;
-            }
-
-            // 基于高得分因子的具体建议
-            if (sortedFactors.length > 0) {
-                suggestions += `<p><strong>针对您的具体关注领域：</strong></p><ul>`;
-
-                sortedFactors.forEach(([name, data]) => {
-                    const score = parseFloat(data.score);
-                    if (name === '抑郁' && score >= 1.5) {
-                        suggestions += `<li><strong>抑郁：</strong>增加愉快活动安排，即使兴趣降低也尝试参与；考虑光照疗法（尤其是季节性抑郁）；建立规律的生活结构。</li>`;
-                    }
-                    if (name === '焦虑' && score >= 1.5) {
-                        suggestions += `<li><strong>焦虑：</strong>练习腹式深呼吸；渐进式暴露于恐惧情境（从轻度开始）；限制新闻和社交媒体消费。</li>`;
-                    }
-                    if (name === '强迫症状' && score >= 1.5) {
-                        suggestions += `<li><strong>强迫症状：</strong>尝试延迟执行强迫行为；分散注意力到其他活动；记录强迫思维出现频率和情境。</li>`;
-                    }
-                    if (name === '人际关系敏感' && score >= 1.5) {
-                        suggestions += `<li><strong>人际关系敏感：</strong>练习积极的自我对话；参加社交技能训练小组；挑战负面的人际关系预期。</li>`;
-                    }
-                });
-
-                suggestions += `</ul>`;
-            }
-
-            return suggestions;
         }
 
         // 重新测试
@@ -2871,98 +2857,6 @@
             // 滚动到顶部
             window.scrollTo(0, 0);
         }
-
-        // ==============================
-        // 代码保护功能
-        // ==============================
-
-        // 防止右键菜单
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // 防止快捷键
-        document.addEventListener('keydown', function (e) {
-            // 禁用 F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+Shift+I
-            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+U
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+S
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+Shift+J
-            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+Shift+C
-            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-                e.preventDefault();
-                return false;
-            }
-            // 禁用 Ctrl+A
-            if (e.ctrlKey && e.key === 'a') {
-                e.preventDefault();
-                return false;
-            }
-        });
-
-        // 防止文本选择
-        document.addEventListener('selectstart', function (e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // 防止拖拽
-        document.addEventListener('dragstart', function (e) {
-            e.preventDefault();
-            return false;
-        });
-
-        // 额外键盘保护
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123) { // F12
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { // Ctrl+U
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { // Ctrl+Shift+I
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { // Ctrl+Shift+J
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { // Ctrl+S
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'A'.charCodeAt(0)) { // Ctrl+A
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'C'.charCodeAt(0)) { // Ctrl+C
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'X'.charCodeAt(0)) { // Ctrl+X
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'P'.charCodeAt(0)) { // Ctrl+P
-                return false;
-            }
-        };
 
         // 移动端优化：防止双击缩放
         let lastTouchEnd = 0;
@@ -3065,9 +2959,9 @@
             }
         };
 
+
         // 初始化问卷
         window.onload = initQuestionnaire;
-
     </script>
 </body>
 
